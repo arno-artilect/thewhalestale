@@ -1221,7 +1221,7 @@ function loadGallery() {
             console.log('JSON method failed, trying directory listing...');
             
             // Method 2: For servers with directory listing enabled (less secure)
-            fetch('/images/gallery/')
+            fetch('./images/gallery/')
                 .then(response => response.text())
                 .then(html => {
                     const parser = new DOMParser();
