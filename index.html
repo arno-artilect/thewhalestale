@@ -1199,7 +1199,7 @@ function loadGallery() {
     const galleryContainer = document.getElementById('dynamic-gallery');
     
     // Method 1: Try loading from JSON manifest (Recommended)
-    fetch('/images/gallery/gallery.json')
+    fetch('./images/gallery/gallery.json')
         .then(response => response.json())
         .then(images => {
             galleryContainer.innerHTML = ''; // Clear loading text
