@@ -1,76 +1,233 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-ZA" data-theme="light">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Whale's Tale Guesthouse - Hermanus Ocean View Accommodation</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>The Whale's Tale Guesthouse | Luxury Ocean View Accommodation in Hermanus</title>
+    <meta name="description" content="Luxury guesthouse in Hermanus with stunning ocean views. Perfect for whale watching, shark cage diving & golf getaways. Cliff path access to town. Book direct for best rates!">
+    
+    <!-- Open Graph / Social Media -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.thewhalestale.co.za/">
+    <meta property="og:title" content="The Whale's Tale Guesthouse | Hermanus Ocean Views">
+    <meta property="og:description" content="Wake up to whale sightings from your room. Luxury accommodation on the famous Hermanus cliff path.">
+    <meta property="og:image" content="/images/og-whale-tale.jpg">
     
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
-    <link rel="apple-touch-icon" href="images/logo.jpg">
+    <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+    <link rel="apple-touch-icon" href="/images/logo.jpg">
     
-    <!-- External Libraries -->
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Lato:wght@400;700&display=swap" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Three.js for 3D logo -->
     <script src="https://threejs.org/build/three.min.js"></script>
     <script src="https://threejs.org/examples/js/loaders/OBJLoader.js"></script>
     
     <style>
-        /* ========== CSS VARIABLES FOR CUSTOMIZATION ========== */
+        /* ========== CSS VARIABLES ========== */
         :root {
-            /* Light Mode Colors */
-            --primary-color: #0066cc;
-            --secondary-color: #9933cc;
-            --accent-gradient: linear-gradient(135deg, #0066cc, #9933cc);
-            --header-bg: rgba(255, 255, 255, 0.98);
-            --header-text: #2c3e50;
-            --body-bg: #ffffff;
-            --text-primary: #2c3e50;
-            --text-secondary: #5a6c7d;
-            --card-bg: #ffffff;
-            --card-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            /* Primary Brand Colors - Ocean & Whale Theme */
+            --primary-color: #0d7377; /* Deep ocean teal */
+            --primary-light: #14a39b; /* Brighter teal */
+            --primary-dark: #0a5a5d; /* Darker ocean */
+            --secondary-color: #9d65c9; /* Purple accent - like whales */
+            --secondary-light: #b18bde;
+            --accent-color: #ff6b9d; /* Pink accent - sunset */
+            
+            /* Neutral Colors */
+            --color-bg: #f8f9fa;
+            --color-surface: #ffffff;
+            --color-text: #1a1a1a;
+            --color-text-muted: #6c757d;
+            --color-text-light: #ffffff;
+            --color-border: rgba(0,0,0,0.08);
+            
+            /* Gradients */
+            --gradient-primary: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            --gradient-ocean: linear-gradient(135deg, #0d7377, #14a39b, #1bc4b6);
+            --gradient-sunset: linear-gradient(135deg, #ff6b9d, #ff8fb1, #ffb6c1);
+            
+            /* Layout */
+            --max-width: 1400px;
+            --section-padding: 100px 20px;
+            --header-height: 90px;
             --border-radius: 16px;
-            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --border-radius-sm: 8px;
+            --transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+            --transition-slow: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+            
+            /* Typography */
+            --font-primary: 'Playfair Display', Georgia, serif;
+            --font-secondary: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            --font-size-base: 1rem;
+            --font-size-lg: 1.125rem;
+            --font-size-xl: 2rem;
+            --font-size-xxl: clamp(3rem, 8vw, 6rem);
             --hero-font-size: clamp(3rem, 8vw, 6rem);
             --hero-sub-font-size: clamp(1.2rem, 3vw, 2rem);
-            --header-height: 90px;
+            
+            /* Shadows */
+            --shadow-sm: 0 2px 8px rgba(0,0,0,0.1);
+            --shadow-md: 0 4px 20px rgba(0,0,0,0.15);
+            --shadow-lg: 0 10px 40px rgba(0,0,0,0.2);
+            
+            /* Z-index */
+            --z-header: 1000;
+            --z-modal: 2000;
+            --z-overlay: 1500;
         }
 
-        /* Dark Mode Colors */
+        /* Dark Mode Variables */
         [data-theme="dark"] {
-            --primary-color: #4d9fff;
-            --secondary-color: #b366ff;
-            --accent-gradient: linear-gradient(135deg, #4d9fff, #b366ff);
-            --header-bg: rgba(20, 30, 48, 0.98);
-            --header-text: #e0e0e0;
-            --body-bg: #0a1929;
-            --text-primary: #e0e0e0;
-            --text-secondary: #b0b0b0;
-            --card-bg: #1a2b3d;
-            --card-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            --primary-color: #14a39b;
+            --primary-light: #1bc4b6;
+            --primary-dark: #0d7377;
+            --secondary-color: #b18bde;
+            --accent-color: #ff8fb1;
+            --color-bg: #121212;
+            --color-surface: #1e1e1e;
+            --color-text: #e0e0e0;
+            --color-text-muted: #b0b0b0;
+            --color-border: rgba(255,255,255,0.08);
         }
 
         /* ========== GLOBAL STYLES ========== */
-        * {
+        *, *::before, *::after {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
+        html {
+            font-size: var(--font-size-base);
+            scroll-behavior: smooth;
+            scroll-padding-top: var(--header-height);
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            html {
+                scroll-behavior: auto;
+            }
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
         body {
             font-family: var(--font-secondary);
-            color: var(--text-primary);
-            background: var(--body-bg);
+            color: var(--color-text);
+            background: var(--color-bg);
             overflow-x: hidden;
-            scroll-behavior: smooth;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
             transition: var(--transition);
         }
 
-        section {
-            position: relative;
-            padding: 80px 20px;
-            max-width: 1400px;
+        h1, h2, h3, h4, h5, h6 {
+            font-family: var(--font-primary);
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        h1 {
+            font-size: var(--font-size-xxl);
+            margin-bottom: 1rem;
+        }
+
+        h2 {
+            font-size: var(--font-size-xl);
+            margin-bottom: 2rem;
+        }
+
+        p {
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+            color: var(--color-text-muted);
+        }
+
+        a {
+            color: var(--primary-color);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        a:hover {
+            color: var(--secondary-color);
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* ========== UTILITY CLASSES ========== */
+        .container {
+            max-width: var(--max-width);
             margin: 0 auto;
+            padding: 0 20px;
+            width: 100%;
+        }
+
+        .section {
+            padding: var(--section-padding);
+            position: relative;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 15px 40px;
+            border: none;
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            text-decoration: none;
+            font-size: var(--font-size-base);
+            font-family: var(--font-secondary);
+        }
+
+        .btn--primary {
+            background: var(--gradient-primary);
+            color: white;
+        }
+
+        .btn--primary:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn--outline {
+            background: transparent;
+            color: white;
+            border: 2px solid white;
+        }
+
+        .btn--outline:hover {
+            background: white;
+            color: var(--primary-color);
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-title h2 {
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: inline-block;
         }
 
         /* ========== HEADER ========== */
@@ -80,11 +237,15 @@
             left: 0;
             right: 0;
             height: var(--header-height);
-            background: var(--header-bg);
+            background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-            z-index: 1000;
+            z-index: var(--z-header);
             transition: var(--transition);
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        [data-theme="dark"] header {
+            background: rgba(30, 30, 30, 0.95);
         }
 
         .header-container {
@@ -92,52 +253,49 @@
             align-items: center;
             justify-content: space-between;
             height: 100%;
-            padding: 0 40px;
-            max-width: 1600px;
+            padding: 0 20px;
+            max-width: var(--max-width);
             margin: 0 auto;
         }
 
         .logo-section {
             display: flex;
             align-items: center;
-            gap: 20px;
+            gap: 15px;
         }
 
         #logo-3d {
-            width: 60px;
-            height: 60px;
+            width: 50px;
+            height: 50px;
             cursor: pointer;
         }
 
         .logo-img {
             height: 50px;
             width: auto;
-            border-radius: var(--border-radius);
         }
 
         nav ul {
             display: flex;
             list-style: none;
-            gap: 35px;
+            gap: 30px;
         }
 
         nav a {
-            text-decoration: none;
-            color: var(--header-text);
-            font-weight: 700;
-            font-size: 1.1rem;
-            transition: var(--transition);
+            color: var(--color-text);
+            font-weight: 600;
             position: relative;
+            padding: 5px 0;
         }
 
         nav a::after {
             content: '';
             position: absolute;
-            bottom: -5px;
+            bottom: 0;
             left: 0;
             width: 0;
-            height: 3px;
-            background: var(--accent-gradient);
+            height: 2px;
+            background: var(--gradient-primary);
             transition: var(--transition);
         }
 
@@ -148,7 +306,7 @@
         .header-controls {
             display: flex;
             align-items: center;
-            gap: 20px;
+            gap: 15px;
         }
 
         .control-btn {
@@ -156,9 +314,9 @@
             border: none;
             cursor: pointer;
             padding: 10px;
+            color: var(--color-text);
+            font-size: 1.2rem;
             transition: var(--transition);
-            color: var(--header-text);
-            font-size: 1.3rem;
         }
 
         .control-btn:hover {
@@ -170,14 +328,14 @@
             flex-direction: column;
             justify-content: space-between;
             width: 30px;
-            height: 24px;
+            height: 20px;
             cursor: pointer;
         }
 
         .hamburger span {
             width: 100%;
             height: 3px;
-            background: var(--header-text);
+            background: var(--color-text);
             transition: var(--transition);
             border-radius: 3px;
         }
@@ -194,144 +352,111 @@
             transform: rotate(-45deg) translate(7px, -6px);
         }
 
-        /* ========== MOBILE MENU ========== */
-        @media (max-width: 768px) {
-            .hamburger {
-                display: flex;
-            }
-
-            nav {
-                position: fixed;
-                top: var(--header-height);
-                right: -100%;
-                width: 100%;
-                height: calc(100vh - var(--header-height));
-                background: var(--header-bg);
-                transition: var(--transition);
-                display: flex;
-                align-items: center;
-                justify-content: center;
-            }
-
-            nav.active {
-                right: 0;
-            }
-
-            nav ul {
-                flex-direction: column;
-                gap: 40px;
-                text-align: center;
-            }
-
-            nav a {
-                font-size: 1.5rem;
-            }
-        }
-
-        /* ========== PARALLAX SECTIONS ========== */
-        .parallax-section {
+        /* ========== HERO SECTION (PARALLAX) ========== */
+        .hero-section {
             position: relative;
             height: 100vh;
             overflow: hidden;
             display: flex;
             align-items: center;
-            justify-content: transparent;
+            justify-content: center;
         }
 
-        .parallax-bg {
+        .hero-bg {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 120%;
-            object-fit: cover;
-            z-index: -0;
-			will-change: transform;
-			/* Prevent flickering */
-			backface-visibility: hidden;
-			transform: translateZ(0);
+            z-index: -2;
+            will-change: transform;
         }
 
-        .parallax-content {
+        .hero-bg video,
+        .hero-bg img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: brightness(0.7);
+        }
+
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(13, 115, 119, 0.2));
+            z-index: -1;
+        }
+
+        .hero-content {
             text-align: center;
             color: white;
-            z-index: 2;
-            padding: 20px;
-        }
-
-        .parallax-content h1 {
-            font-family: var(--font-primary);
-            font-size: var(--hero-font-size);
-            font-weight: 900;
-            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.5);
-            margin-bottom: 1rem;
-            letter-spacing: 2px;
-        }
-
-        .parallax-content p {
-            font-size: var(--hero-sub-font-size);
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-
-
-
-		/* Add this to ensure content stays visible */
-		.parallax-content {
-			position: relative;
-			z-index: 1;
-			text-align: center;
-			color: white;
-			padding: 20px;
-			/* Prevent text selection during scroll */
-			user-select: none;
-		}
-
-
-
-/** Test visibility - REMOVE after debugging /
-#attractions {
-    background: linear-gradient(to bottom, #1e3c72, #2a5298);
-}
-#gallery {
-    background: linear-gradient(to bottom, #2a5298, #7e8ba3);
-}*/
-
-
-        /* ========== ABOUT SECTION ========== */
-        .about-section {
-            background: var(--body-bg);
-            padding: 100px 20px;
-        }
-
-        .about-content {
             max-width: 900px;
-            margin: 0 auto;
-            line-height: 1.8;
-            font-size: 1.1rem;
-            text-align: center;
-            color: var(--text-secondary);
+            padding: 20px;
+            animation: fadeInUp 1s ease-out;
         }
 
-        .about-content p {
-            margin-bottom: 1.5rem;
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero-title {
+            font-size: var(--hero-font-size);
+            text-shadow: 0 2px 20px rgba(0,0,0,0.5);
+            margin-bottom: 1rem;
+            background: linear-gradient(to right, #ffffff, #b1e5f3);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-subtitle {
+            font-size: var(--hero-sub-font-size);
+            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 2rem;
+        }
+
+        .social-proof {
+            display: inline-flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px 25px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: var(--border-radius);
+            backdrop-filter: blur(10px);
+            margin-top: 30px;
+        }
+
+        .social-proof-badge {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(157, 101, 201, 0.2);
+            color: white;
+            padding: 5px 15px;
+            border-radius: var(--border-radius-sm);
         }
 
         /* ========== ROOMS SECTION ========== */
         .rooms-section {
-            background: var(--body-bg);
-        }
-
-        .section-title {
-            font-family: var(--font-primary);
-            font-size: 3rem;
-            text-align: center;
-            margin-bottom: 60px;
-            background: var(--accent-gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            background: var(--color-bg);
         }
 
         .rooms-carousel {
@@ -340,28 +465,50 @@
             overflow-x: auto;
             scroll-snap-type: x mandatory;
             padding: 20px 10px;
+            scrollbar-width: thin;
+            scrollbar-color: var(--primary-color) var(--color-bg);
+        }
+
+        .rooms-carousel::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        .rooms-carousel::-webkit-scrollbar-track {
+            background: var(--color-bg);
+            border-radius: var(--border-radius);
+        }
+
+        .rooms-carousel::-webkit-scrollbar-thumb {
+            background: var(--gradient-primary);
+            border-radius: var(--border-radius);
         }
 
         .room-card {
             flex: 0 0 350px;
-            background: var(--card-bg);
+            background: var(--color-surface);
             border-radius: var(--border-radius);
             overflow: hidden;
-            box-shadow: var(--card-shadow);
+            box-shadow: var(--shadow-md);
             cursor: pointer;
             transition: var(--transition);
             scroll-snap-align: center;
+            border: 1px solid var(--color-border);
         }
 
         .room-card:hover {
             transform: translateY(-10px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            box-shadow: var(--shadow-lg);
         }
 
         .room-img {
             width: 100%;
             height: 250px;
             object-fit: cover;
+            transition: var(--transition-slow);
+        }
+
+        .room-card:hover .room-img {
+            transform: scale(1.05);
         }
 
         .room-info {
@@ -370,48 +517,193 @@
 
         .room-name {
             font-size: 1.5rem;
-            font-weight: 700;
             margin-bottom: 10px;
-            color: var(--text-primary);
+            color: var(--primary-color);
         }
 
         .room-price {
             font-size: 1.8rem;
-            color: var(--primary-color);
-            font-weight: 900;
+            color: var(--secondary-color);
+            font-weight: 700;
         }
 
-        /* ========== ATTRACTIONS ========== */
+        /* ========== ATTRACTIONS SECTION (PARALLAX) ========== */
+        .attractions-section {
+            position: relative;
+            min-height: 100vh;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+        }
+
+        .attractions-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 120%;
+            z-index: -2;
+            will-change: transform;
+            background-image: url('/images/paralax_attractions.jpg');
+            background-size: cover;
+            background-position: center;
+            filter: brightness(0.8);
+        }
+
+        .attractions-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(13, 115, 119, 0.7), rgba(157, 101, 201, 0.4));
+            z-index: -1;
+        }
+
+        .attractions-content {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            color: white;
+        }
+
         .attractions-carousel {
             display: flex;
             gap: 20px;
             overflow-x: auto;
-            padding: 20px 0;
+            scroll-snap-type: x mandatory;
+            padding: 20px 10px;
         }
 
-        .attraction-item {
-            flex: 0 0 250px;
+        .attractions-carousel::-webkit-scrollbar {
+            height: 6px;
+        }
+
+        .attractions-carousel::-webkit-scrollbar-track {
+            background: rgba(255,255,255,0.1);
+            border-radius: var(--border-radius);
+        }
+
+        .attractions-carousel::-webkit-scrollbar-thumb {
+            background: var(--gradient-primary);
+            border-radius: var(--border-radius);
+        }
+
+        .attraction-card {
+            flex: 0 0 300px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: var(--border-radius);
+            overflow: hidden;
             cursor: pointer;
             transition: var(--transition);
+            scroll-snap-align: center;
+            border: 1px solid rgba(255,255,255,0.2);
         }
 
-        .attraction-item:hover {
-            transform: scale(1.05);
+        .attraction-card:hover {
+            transform: translateY(-10px);
+            background: rgba(255, 255, 255, 0.15);
         }
 
         .attraction-img {
             width: 100%;
-            height: 150px;
+            height: 200px;
             object-fit: cover;
+        }
+
+        .attraction-info {
+            padding: 20px;
+        }
+
+        .attraction-name {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            color: white;
+        }
+
+        /* ========== ABOUT SECTION ========== */
+        .about-section {
+            background: var(--color-bg);
+        }
+
+        .about-content {
+            max-width: 900px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        /* ========== GALLERY SECTION (PARALLAX) ========== */
+        .gallery-section {
+            position: relative;
+            min-height: 100vh;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+        }
+
+        .gallery-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 120%;
+            z-index: -2;
+            will-change: transform;
+            background-image: url('/images/foyer.jpg');
+            background-size: cover;
+            background-position: center;
+            filter: brightness(0.7);
+        }
+
+        .gallery-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.6), rgba(13, 115, 119, 0.5));
+            z-index: -1;
+        }
+
+        .gallery-content {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            color: white;
+        }
+
+        .gallery-carousel {
+            display: flex;
+            gap: 15px;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            padding: 20px 10px;
+        }
+
+        .gallery-carousel::-webkit-scrollbar {
+            height: 6px;
+        }
+
+        .gallery-carousel::-webkit-scrollbar-track {
+            background: rgba(255,255,255,0.1);
             border-radius: var(--border-radius);
         }
 
-        /* ========== GALLERY ========== */
-        .gallery-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-            padding: 20px 0;
+        .gallery-carousel::-webkit-scrollbar-thumb {
+            background: var(--gradient-primary);
+            border-radius: var(--border-radius);
+        }
+
+        .gallery-item {
+            flex: 0 0 250px;
+            cursor: pointer;
+            transition: var(--transition);
+            scroll-snap-align: center;
+        }
+
+        .gallery-item:hover {
+            transform: scale(1.05);
         }
 
         .gallery-img {
@@ -419,57 +711,14 @@
             height: 200px;
             object-fit: cover;
             border-radius: var(--border-radius);
-            cursor: pointer;
-            transition: var(--transition);
+            border: 2px solid rgba(255,255,255,0.3);
         }
 
-        .gallery-img:hover {
-            transform: scale(1.05);
-        }
-
-
-
-/* ========== GALLERY CAROUSEL ========== */
-.gallery-carousel {
-    display: flex;
-    gap: 20px;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    padding: 20px 10px;
-}
-
-.gallery-item {
-    flex: 0 0 250px; /* Fixed width like room cards */
-    cursor: pointer;
-    transition: var(--transition);
-    scroll-snap-align: center;
-}
-
-.gallery-item:hover {
-    transform: scale(1.05);
-}
-
-.gallery-img {
-    width: 100%;
-    height: 200px;
-    object-fit: cover;
-    border-radius: var(--border-radius);
-}
-
-
-
-        /* ========== PROMOTIONS ========== */
+        /* ========== PROMOTIONS SECTION ========== */
         .promotions-section {
-            background: var(--accent-gradient);
+            background: var(--gradient-primary);
             color: white;
             text-align: center;
-            padding: 80px 20px;
-        }
-
-        .promotions-section h2 {
-            font-family: var(--font-primary);
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
         }
 
         .promo-btn {
@@ -478,32 +727,32 @@
             padding: 15px 40px;
             border: none;
             border-radius: var(--border-radius);
-            font-size: 1.2rem;
-            font-weight: 700;
+            font-size: 1.1rem;
+            font-weight: 600;
             cursor: pointer;
             transition: var(--transition);
-            margin-top: 30px;
+            margin-top: 20px;
         }
 
         .promo-btn:hover {
             transform: scale(1.05);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            box-shadow: var(--shadow-lg);
         }
 
         /* ========== BOOKING SECTION ========== */
         .booking-section {
-            background: var(--body-bg);
+            background: var(--color-bg);
             text-align: center;
         }
 
         .book-now-btn {
-            background: var(--accent-gradient);
+            background: var(--gradient-primary);
             color: white;
             padding: 20px 60px;
             border: none;
             border-radius: var(--border-radius);
-            font-size: 1.5rem;
-            font-weight: 900;
+            font-size: 1.3rem;
+            font-weight: 700;
             cursor: pointer;
             transition: var(--transition);
             text-decoration: none;
@@ -512,12 +761,12 @@
 
         .book-now-btn:hover {
             transform: scale(1.05);
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+            box-shadow: var(--shadow-lg);
         }
 
         /* ========== CONTACT SECTION ========== */
         .contact-section {
-            background: var(--body-bg);
+            background: var(--color-bg);
         }
 
         .contact-container {
@@ -529,29 +778,18 @@
 
         .contact-info {
             padding: 40px;
-            background: var(--card-bg);
+            background: var(--color-surface);
             border-radius: var(--border-radius);
-            box-shadow: var(--card-shadow);
-            color: var(--text-primary);
-        }
-
-        .contact-info h3 {
-            font-size: 1.8rem;
-            margin-bottom: 20px;
-            color: var(--text-primary);
-        }
-
-        .contact-info p {
-            margin-bottom: 15px;
-            font-size: 1.1rem;
-            color: var(--text-secondary);
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--color-border);
         }
 
         .contact-form {
             padding: 40px;
-            background: var(--card-bg);
+            background: var(--color-surface);
             border-radius: var(--border-radius);
-            box-shadow: var(--card-shadow);
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--color-border);
         }
 
         .form-group {
@@ -561,43 +799,45 @@
         .form-group label {
             display: block;
             margin-bottom: 8px;
-            font-weight: 700;
-            color: var(--text-primary);
+            font-weight: 600;
+            color: var(--color-text);
         }
 
         .form-group input,
         .form-group textarea {
             width: 100%;
             padding: 12px;
-            border: 2px solid var(--border-color);
-            border-radius: var(--border-radius);
+            border: 1px solid var(--color-border);
+            border-radius: var(--border-radius-sm);
             font-size: 1rem;
             transition: var(--transition);
-            background: var(--body-bg);
-            color: var(--text-primary);
+            background: var(--color-bg);
+            color: var(--color-text);
         }
 
         .form-group input:focus,
         .form-group textarea:focus {
             outline: none;
             border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(13, 115, 119, 0.1);
         }
 
         .submit-btn {
-            background: var(--accent-gradient);
+            background: var(--gradient-primary);
             color: white;
             padding: 15px 40px;
             border: none;
             border-radius: var(--border-radius);
             font-size: 1.1rem;
-            font-weight: 700;
+            font-weight: 600;
             cursor: pointer;
             transition: var(--transition);
             width: 100%;
         }
 
         .submit-btn:hover {
-            transform: scale(1.05);
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-md);
         }
 
         /* ========== MODAL ========== */
@@ -609,21 +849,27 @@
             width: 100%;
             height: 100%;
             background: rgba(0, 0, 0, 0.8);
-            z-index: 2000;
+            z-index: var(--z-modal);
             align-items: center;
             justify-content: center;
             padding: 20px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
         .modal-content {
-            background: var(--card-bg);
+            background: var(--color-surface);
             max-width: 600px;
             width: 100%;
             border-radius: var(--border-radius);
             padding: 40px;
             position: relative;
             animation: modalSlideIn 0.3s ease;
-            color: var(--text-primary);
+            border: 1px solid var(--color-border);
         }
 
         @keyframes modalSlideIn {
@@ -643,58 +889,137 @@
             right: 20px;
             font-size: 2rem;
             cursor: pointer;
-            color: var(--text-secondary);
+            color: var(--color-text-muted);
             transition: var(--transition);
+            background: none;
+            border: none;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .modal-close:hover {
             color: var(--primary-color);
+            transform: rotate(90deg);
         }
 
         .modal-content h2 {
-            font-family: var(--font-primary);
-            font-size: 2.5rem;
+            font-size: 2rem;
             margin-bottom: 20px;
-            color: var(--text-primary);
+            color: var(--primary-color);
         }
 
         .modal-content p {
             line-height: 1.8;
             margin-bottom: 20px;
-            color: var(--text-secondary);
         }
 
         .price-tag {
             font-size: 2rem;
-            color: var(--primary-color);
-            font-weight: 900;
+            color: var(--secondary-color);
+            font-weight: 700;
+        }
+
+        /* ========== FOOTER ========== */
+        footer {
+            background: var(--primary-dark);
+            color: white;
+            padding: 60px 20px 30px;
+            margin-top: 60px;
+        }
+
+        .footer-content {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-section h3 {
+            color: var(--secondary-light);
+            margin-bottom: 20px;
+            font-size: 1.3rem;
+        }
+
+        .footer-section p,
+        .footer-section a {
+            color: rgba(255,255,255,0.8);
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .footer-section a:hover {
+            color: white;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            color: rgba(255,255,255,0.6);
         }
 
         /* ========== RESPONSIVE ========== */
         @media (max-width: 768px) {
-            .contact-container {
-                grid-template-columns: 1fr;
-            }
-
-            .rooms-carousel {
-                padding-left: 20px;
-                padding-right: 20px;
-            }
-
-            .gallery-grid {
-                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            }
-
             :root {
                 --header-height: 70px;
+                --section-padding: 60px 20px;
             }
 
-            .header-container {
-                padding: 0 20px;
+            .hamburger {
+                display: flex;
             }
 
-            .section {
-                padding: 60px 20px;
+            nav {
+                position: fixed;
+                top: var(--header-height);
+                right: -100%;
+                width: 100%;
+                height: calc(100vh - var(--header-height));
+                background: var(--color-surface);
+                transition: var(--transition);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 20px;
+                box-shadow: var(--shadow-lg);
+            }
+
+            [data-theme="dark"] nav {
+                background: var(--color-surface);
+            }
+
+            nav.active {
+                right: 0;
+            }
+
+            nav ul {
+                flex-direction: column;
+                gap: 30px;
+                text-align: center;
+            }
+
+            nav a {
+                font-size: 1.3rem;
+            }
+
+            .hero-actions {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .contact-container {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+
+            .room-card,
+            .attraction-card {
+                flex: 0 0 280px;
             }
         }
 
@@ -706,8 +1031,8 @@
             padding: 8px;
             border-radius: 50%;
             transition: var(--transition);
-            color: var(--header-text);
-            font-size: 1.3rem;
+            color: var(--color-text);
+            font-size: 1.2rem;
         }
 
         .dark-mode-toggle:hover {
@@ -716,24 +1041,6 @@
 
         [data-theme="dark"] .dark-mode-toggle:hover {
             background: rgba(255, 255, 255, 0.1);
-        }
-
-        /* ========== SCROLLBAR STYLING ========== */
-        .rooms-carousel::-webkit-scrollbar,
-        .attractions-carousel::-webkit-scrollbar {
-            height: 8px;
-        }
-
-        .rooms-carousel::-webkit-scrollbar-track,
-        .attractions-carousel::-webkit-scrollbar-track {
-            background: var(--body-bg);
-            border-radius: var(--border-radius);
-        }
-
-        .rooms-carousel::-webkit-scrollbar-thumb,
-        .attractions-carousel::-webkit-scrollbar-thumb {
-            background: var(--accent-gradient);
-            border-radius: var(--border-radius);
         }
     </style>
 </head>
@@ -744,28 +1051,29 @@
             <div class="logo-section">
                 <!-- 3D Logo with fallback -->
                 <canvas id="logo-3d" title="3D Logo"></canvas>
-                <img src="https://arno-artilect.github.io/thewhalestale/images/logo_1800.png" alt="The Whale's Tale" class="logo-img">
+                <img src="/images/logo_1800.png" alt="The Whale's Tale" class="logo-img">
             </div>
             
             <nav id="main-nav">
                 <ul>
                     <li><a href="#about">ABOUT</a></li>
                     <li><a href="#rooms">ROOMS</a></li>
+                    <li><a href="#attractions">EXPERIENCES</a></li>
                     <li><a href="#gallery">GALLERY</a></li>
                     <li><a href="#promotions">PROMOTIONS</a></li>
-                    <li><a href="#contact">CONTACT US</a></li>
+                    <li><a href="#contact">CONTACT</a></li>
                     <li><a href="#booking">BOOK NOW</a></li>
                 </ul>
             </nav>
             
             <div class="header-controls">
-                <button class="dark-mode-toggle" id="dark-mode-toggle" title="Toggle Dark Mode">
+                <button class="dark-mode-toggle" id="dark-mode-toggle" title="Toggle Dark Mode" aria-label="Toggle dark mode">
                     <i class="fas fa-moon"></i>
                 </button>
-                <button class="control-btn" id="volume-toggle" title="Toggle Volume">
+                <button class="control-btn" id="volume-toggle" title="Toggle Volume" aria-label="Toggle volume">
                     <i class="fas fa-volume-mute"></i>
                 </button>
-                <button class="hamburger" id="menu-toggle">
+                <button class="hamburger" id="menu-toggle" aria-label="Toggle menu" aria-expanded="false">
                     <span></span>
                     <span></span>
                     <span></span>
@@ -774,245 +1082,281 @@
         </div>
     </header>
 
-    <!-- ========== PARALLAX SECTION 1 (HERO) ========== -->
-    <section id="hero" class="parallax-section">
-        <video class="parallax-bg" id="hero-video" autoplay muted loop playsinline>
-            <source src="https://arno-artilect.github.io/thewhalestale/videos/hero-whale-cinematic.mp4" type="video/mp4">
-            <img src="https://arno-artilect.github.io/thewhalestale/images/paralax_pool_main.jpg" alt="Ocean View" class="parallax-bg">
-        </video>
-        <div class="parallax-content">
-            <h1 id="hero-title">THE WHALE'S TALE GUESTHOUSE</h1>
-            <p id="hero-subtitle">It's just a fish tale... until you live it!</p>
+    <!-- ========== HERO SECTION (PARALLAX) ========== -->
+    <section id="hero" class="hero-section">
+        <div class="hero-bg" id="hero-bg">
+            <video id="hero-video" autoplay muted loop playsinline>
+                <source src="/videos/hero-whale-cinematic.mp4" type="video/mp4">
+                <img src="/images/paralax_pool_main.jpg" alt="Ocean View from The Whale's Tale">
+            </video>
+        </div>
+        <div class="hero-overlay"></div>
+        
+        <div class="hero-content">
+            <h1 class="hero-title">THE WHALE'S TALE GUESTHOUSE</h1>
+            <p class="hero-subtitle">It's just a fish tale... until you live it!</p>
+            
+            <div class="hero-actions">
+                <a href="https://book.nightsbridge.com/24965" class="btn btn--primary">BOOK NOW</a>
+                <a href="#rooms" class="btn btn--outline">EXPLORE ROOMS</a>
+            </div>
+            
+            <div class="social-proof">
+                <div class="social-proof-badge">
+                    <i class="fas fa-star"></i>
+                    4.9/5 (127 Reviews)
+                </div>
+                <span>#1 Rated in Hermanus for Whale Watching</span>
+            </div>
         </div>
     </section>
-
 
     <!-- ========== ROOMS SECTION ========== -->
-    <section id="rooms" class="rooms-section">
-        <h2 class="section-title">Our Luxury Rooms</h2>
-        <div class="rooms-carousel">
-            <div class="room-card" onclick="openRoomModal('Luxury Suite', 'R2934.99/night', 'Our two Luxury Rooms are situated on the top floor of the guesthouse. These spacious rooms consist of an en-suite bathroom with shower, flat screen television with DSTV satellite channels, aircon, safe and coffee / tea making facilities.')">
-                <img src="https://arno-artilect.github.io/thewhalestale/images/rooms/room_luxury.jpg" alt="Luxury Suite" class="room-img">
-                <div class="room-info">
-                    <h3 class="room-name">Luxury Suite</h3>
-                    <p class="room-price">R2934.99<span style="font-size: 1rem;">/night</span></p>
-                </div>
+    <section id="rooms" class="section rooms-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Our Luxury Rooms</h2>
+                <p>Wake up to breathtaking ocean views and whale sightings</p>
             </div>
-            <div class="room-card" onclick="openRoomModal('Superior Room', 'R2934.99/night', 'The Superior Double Room is situated on the ground floor of the guesthouse and consists of an en-suite bathroom with shower, flat screen television with DSTV satellite channels, aircon, safe and coffee / tea making facilities. The room also has a cosy patio outside where guests can enjoy a cup of coffee before breakfast.')">
-                <img src="https://arno-artilect.github.io/thewhalestale/images/rooms/room_superior.jpg" alt="Superior Room" class="room-img">
-                <div class="room-info">
-                    <h3 class="room-name">Superior Room</h3>
-                    <p class="room-price">R2934.99<span style="font-size: 1rem;">/night</span></p>
+            
+            <div class="rooms-carousel">
+                <div class="room-card" onclick="openRoomModal('Luxury Suite', 'R2,934.99/night', 'Our two Luxury Rooms are situated on the top floor of the guesthouse. These spacious rooms consist of an en-suite bathroom with shower, flat screen television with DSTV satellite channels, aircon, safe and coffee / tea making facilities.')">
+                    <img src="/images/rooms/room_luxury.jpg" alt="Luxury Suite" class="room-img">
+                    <div class="room-info">
+                        <h3 class="room-name">Luxury Suite</h3>
+                        <p class="room-price">R2,934.99<span style="font-size: 1rem;">/night</span></p>
+                    </div>
                 </div>
-            </div>
-            <div class="room-card" onclick="openRoomModal('Ocean View Luxury', 'R2934.99/night', 'Our Luxury Ocean View Rooms are situated on the top floor with a balcony and beautiful ocean views. These 2 luxurious rooms have an en-suite bathroom, television with satelite channels, aircon and wifi.')">
-                <img src="https://arno-artilect.github.io/thewhalestale/images/rooms/room_luxury_ocean_view.jpg" alt="Ocean View Luxury" class="room-img">
-                <div class="room-info">
-                    <h3 class="room-name">Ocean View Luxury</h3>
-                    <p class="room-price">R2934.99<span style="font-size: 1rem;">/night</span></p>
+                <div class="room-card" onclick="openRoomModal('Superior Room', 'R2,934.99/night', 'The Superior Double Room is situated on the ground floor of the guesthouse and consists of an en-suite bathroom with shower, flat screen television with DSTV satellite channels, aircon, safe and coffee / tea making facilities. The room also has a cosy patio outside where guests can enjoy a cup of coffee before breakfast.')">
+                    <img src="/images/rooms/room_superior.jpg" alt="Superior Room" class="room-img">
+                    <div class="room-info">
+                        <h3 class="room-name">Superior Room</h3>
+                        <p class="room-price">R2,934.99<span style="font-size: 1rem;">/night</span></p>
+                    </div>
                 </div>
-            </div>
-            <!--div class="room-card" onclick="openRoomModal('Garden Suite', 'R2934.99/night', 'Peaceful garden views with direct pool access and private patio.')">
-                <img src="/images/rooms/room_superior.jpg" alt="Garden Suite" class="room-img">
-                <div class="room-info">
-                    <h3 class="room-name">Garden Suite</h3>
-                    <p class="room-price">$200<span style="font-size: 1rem;">/night</span></p>
-                </div>
-            </div>
-            <div class="room-card" onclick="openRoomModal('Family Suite', 'R2934.99/night', 'Spacious family accommodation with separate living area and full ocean views.')">
-                <img src="/images/rooms/room_luxury.jpg" alt="Family Suite" class="room-img">
-                <div class="room-info">
-                    <h3 class="room-name">Family Suite</h3>
-                    <p class="room-price">$350<span style="font-size: 1rem;">/night</span></p>
-                </div>
-            </div-->
-        </div>
-    </section>
-
-    <!-- ========== PARALLAX SECTION 2 (ATTRACTIONS) ========== -->
-    <section id="attractions" class="parallax-section">
-        <!--img src="/images/paralax_attractions.jpg" alt="Attractions" class="parallax-bg"-->
-        
-<div style="position: absolute; top:0; left:0; width:100%; height:100%; background: url('https://arno-artilect.github.io/thewhalestale/images/paralax_attractions.jpg') center/cover; z-index:0;"></div>        
-        
-        <!--div class="parallax-content" style="width: 100%;"-->
-        <div class="parallax-content" style="position: relative; z-index:1;">
-            <h2 style="font-size: var(--hero-sub-font-size); color: white; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); margin-bottom: 30px; text-align: center;">
-                Unforgettable Experiences
-            </h2>
-            <div class="attractions-carousel">
-                <div class="attraction-item" onclick="openModal('Whale Watching', 'Experience the majestic Southern Right Whales up close during whale season. Boat tours and cliff path viewing available.')">
-                    <img src="https://arno-artilect.github.io/thewhalestale/images/attractions/whale.webp" alt="Whale Watching" class="attraction-img">
-                </div>
-                <div class="attraction-item" onclick="openModal('Golf Course', 'Hermanus Golf Club is perfectly set on the slopes of the Overberg with breathtaking views of Walker Bay. The spectacular 27 hole course is set around a restored wetland, which provides for beautiful fynbos, abundant bird life and an opportunity to spot some springbok along the way.')">
-                    <img src="https://arno-artilect.github.io/thewhalestale/images/attractions/golf.jpg" alt="Golf" class="attraction-img">
-                </div>
-                <div class="attraction-item" onclick="openModal('Shark Cage Diving', 'Face-to-face encounters with Great White Sharks in their natural habitat. Safe and thrilling adventure.')">
-                    <img src="https://arno-artilect.github.io/thewhalestale/images/attractions/shark.jpg" alt="Shark Diving" class="attraction-img">
-                </div>
-                <div class="attraction-item" onclick="openModal('Wine Tours', 'Explore the famous Hemel-en-Aarde valley wineries. Premium tastings and scenic vineyard tours. Hemel-en-Aarde is widely regarded as one of the most exciting and most beautiful wine areas in South Africa. It is comprised of three Wine Wards located behind the historic seaside resort town of Hermanus, surrounded by nature reserves, overlooking Walker Bay.')">
-                    <img src="https://arno-artilect.github.io/thewhalestale/images/attractions/wine.jpg" alt="WINE VALLEY" class="attraction-img">
-                </div>
-                <div class="attraction-item" onclick="openModal('Hiking Trails', 'Scenic coastal hikes along the famous cliff path. The Hermanus cliff path hugs the coastline and offers a 12km path for walkers and hikers alike. Start near the new harbour and enjoy a visual journey along the beautiful rugged coastline to Grotto beach, this path offers many benches to sit and watch the whales or to enjoy ocean views. Dolphin and whale watching opportunities.')">
-                    <img src="https://arno-artilect.github.io/thewhalestale/images/attractions/cliff.jpg" alt="Hiking" class="attraction-img">
-                </div>
-                <div class="attraction-item" onclick="openModal('Markets', 'The Hermanus Country Market is open every Saturday and offers a variety of organic produce, herbs, jams, deli-treats and home-grown goods, as well as several stalls for wines and gifts. This vibrant market is a hub of activity within a relaxed atmosphere, and has become one of the most popular weekly market venues in the country.')">
-                    <img src="https://arno-artilect.github.io/thewhalestale/images/attractions/market.jpg" alt="Market" class="attraction-img">
-                </div>
-                <div class="attraction-item" onclick="openModal('Beaches', 'The Blue Flag Grotto Beach is well known for its massive stretch of stunning sandy beach and ocean. It is enjoyed by locals and tourists alike and boasts a view of the mountainous areas behind whilst still having a seemingly unending view of the beach. This beach is perfect for swimming, suntanning, games and long, leisurely walks. Pristine beaches for swimming, surfing, and sunset walks. Blue flag certified water quality.')">
-                    <img src="https://arno-artilect.github.io/thewhalestale/images/attractions/beach.jpg" alt="Beaches" class="attraction-img">
+                <div class="room-card" onclick="openRoomModal('Ocean View Luxury', 'R3,450/night', 'Our Luxury Ocean View Rooms are situated on the top floor with a balcony and beautiful ocean views. These 2 luxurious rooms have an en-suite bathroom, television with satellite channels, aircon and wifi. Perfect for whale watching from your private balcony.')">
+                    <img src="/images/rooms/room_luxury_ocean_view.jpg" alt="Ocean View Luxury" class="room-img">
+                    <div class="room-info">
+                        <h3 class="room-name">Ocean View Luxury</h3>
+                        <p class="room-price">R3,450<span style="font-size: 1rem;">/night</span></p>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-
+    <!-- ========== ATTRACTIONS SECTION (PARALLAX) ========== -->
+    <section id="attractions" class="attractions-section">
+        <div class="attractions-bg" id="attractions-bg"></div>
+        <div class="attractions-overlay"></div>
+        
+        <div class="container">
+            <div class="attractions-content">
+                <div class="section-title" style="color: white;">
+                    <h2 style="-webkit-text-fill-color: white; background: none;">Unforgettable Experiences</h2>
+                    <p style="color: rgba(255,255,255,0.9);">Discover the magic of Hermanus and Walker Bay</p>
+                </div>
+                
+                <div class="attractions-carousel">
+                    <div class="attraction-card" onclick="openAttractionModal('Whale Watching', 'Experience the majestic Southern Right Whales up close during whale season (June-December). Boat tours and cliff path viewing available. Watch from your balcony or join our guided whale watching excursions.')">
+                        <img src="/images/attractions/whale.webp" alt="Whale Watching" class="attraction-img">
+                        <div class="attraction-info">
+                            <h3 class="attraction-name">Whale Watching</h3>
+                            <p style="color: rgba(255,255,255,0.9);">June - December Season</p>
+                        </div>
+                    </div>
+                    <div class="attraction-card" onclick="openAttractionModal('Golf Course', 'Hermanus Golf Club is perfectly set on the slopes of the Overberg with breathtaking views of Walker Bay. The spectacular 27 hole course is set around a restored wetland, which provides for beautiful fynbos, abundant bird life and an opportunity to spot some springbok along the way.')">
+                        <img src="/images/attractions/golf.jpg" alt="Golf" class="attraction-img">
+                        <div class="attraction-info">
+                            <h3 class="attraction-name">Golf</h3>
+                            <p style="color: rgba(255,255,255,0.9);">27-hole championship course</p>
+                        </div>
+                    </div>
+                    <div class="attraction-card" onclick="openAttractionModal('Shark Cage Diving', 'Face-to-face encounters with Great White Sharks in their natural habitat. Safe and thrilling adventure with certified operators. All equipment and training provided.')">
+                        <img src="/images/attractions/shark.jpg" alt="Shark Diving" class="attraction-img">
+                        <div class="attraction-info">
+                            <h3 class="attraction-name">Shark Cage Diving</h3>
+                            <p style="color: rgba(255,255,255,0.9);">Thrilling ocean adventure</p>
+                        </div>
+                    </div>
+                    <div class="attraction-card" onclick="openAttractionModal('Wine Tours', 'Explore the famous Hemel-en-Aarde valley wineries. Premium tastings and scenic vineyard tours. Hemel-en-Aarde is widely regarded as one of the most exciting and most beautiful wine areas in South Africa.')">
+                        <img src="/images/attractions/wine.jpg" alt="WINE VALLEY" class="attraction-img">
+                        <div class="attraction-info">
+                            <h3 class="attraction-name">Wine Valley Tours</h3>
+                            <p style="color: rgba(255,255,255,0.9);">World-class cool climate wines</p>
+                        </div>
+                    </div>
+                    <div class="attraction-card" onclick="openAttractionModal('Hiking Trails', 'Scenic coastal hikes along the famous cliff path. The Hermanus cliff path hugs the coastline and offers a 12km path for walkers and hikers alike. Dolphin and whale watching opportunities.')">
+                        <img src="/images/attractions/cliff.jpg" alt="Hiking" class="attraction-img">
+                        <div class="attraction-info">
+                            <h3 class="attraction-name">Cliff Path Hiking</h3>
+                            <p style="color: rgba(255,255,255,0.9);">12km coastal trail</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
     <!-- ========== ABOUT SECTION ========== -->
-    <section id="about" class="about-section">
-        <h2 class="section-title">Discover Our Story</h2>
-        <div class="about-content">
-            <p>The Whale’s Tale Guesthouse offers a magnificent ocean view, and is conveniently situated between the Hermanus New Harbour and the Town Centre. It gives our guests easy access to the famous cliff path where you will find magnificent scenery of the ocean meeting the cliffs, various plant species and of course the adventure of seeing a Southern Right Whale during Whale Season. The cliff path offers a scenic, relaxing walk to the town centre where you will find a variety of restaurants, art galleries, shops and the famous Old Harbour.</p>
-            <p>The guesthouse consists of 5 beautifully decorated bedrooms, each with air-conditioning, an en-suite bathroom, smart televisions and complimentary WiFi. Other facilities includes free parking, solar power and an outdoor swimming pool where our guests can relax on the deck while enjoying the magnificent view of the ocean.</p>
-            <p>The Whale’s Tale Guest House will enchant you with a tale of a memorable holiday in a beautiful seaside town, where guests stay in luxury and are treated like good friends.</p>
+    <section id="about" class="section about-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Discover Our Story</h2>
+            </div>
+            
+            <div class="about-content">
+                <p>The Whale's Tale Guesthouse offers a magnificent ocean view, and is conveniently situated between the Hermanus New Harbour and the Town Centre. It gives our guests easy access to the famous cliff path where you will find magnificent scenery of the ocean meeting the cliffs, various plant species and of course the adventure of seeing a Southern Right Whale during Whale Season.</p>
+                <p>The guesthouse consists of 5 beautifully decorated bedrooms, each with air-conditioning, an en-suite bathroom, smart televisions and complimentary WiFi. Other facilities includes free parking, solar power and an outdoor swimming pool where our guests can relax on the deck while enjoying the magnificent view of the ocean.</p>
+                <p>The Whale's Tale Guest House will enchant you with a tale of a memorable holiday in a beautiful seaside town, where guests stay in luxury and are treated like good friends.</p>
+            </div>
         </div>
     </section>
 
-
-
-
-
-
-
-
-
-    <!-- ========== PARALLAX SECTION 3 (GALLERY) ========== ->
-    <section id="gallery" class="parallax-section">
-        <img src="/images/foyer.jpg" alt="Gallery Background" class="parallax-bg">
-        <div class="parallax-content" style="width: 100%;">
-            <h2 style="font-size: var(--hero-sub-font-size); color: white; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); margin-bottom: 40px; text-align: center;">Our Gallery</h2>
-            <div class="gallery-grid">
-                <img src="https://source.unsplash.com/300x200/?guesthouse,bedroom" alt="Bedroom" class="gallery-img" onclick="openImageModal(this.src)">
-                <img src="https://source.unsplash.com/300x200/?guesthouse,lounge" alt="Lounge" class="gallery-img" onclick="openImageModal(this.src)">
-                <img src="https://source.unsplash.com/300x200/?guesthouse,pool" alt="Pool" class="gallery-img" onclick="openImageModal(this.src)">
-                <img src="https://source.unsplash.com/300x200/?ocean,cliff" alt="Ocean View" class="gallery-img" onclick="openImageModal(this.src)">
-                <img src="https://source.unsplash.com/300x200/?breakfast,dining" alt="Dining" class="gallery-img" onclick="openImageModal(this.src)">
-                <img src="https://source.unsplash.com/300x200/?guesthouse,balcony" alt="Balcony" class="gallery-img" onclick="openImageModal(this.src)">
+    <!-- ========== GALLERY SECTION (PARALLAX) ========== -->
+    <section id="gallery" class="gallery-section">
+        <div class="gallery-bg" id="gallery-bg"></div>
+        <div class="gallery-overlay"></div>
+        
+        <div class="container">
+            <div class="gallery-content">
+                <div class="section-title" style="color: white;">
+                    <h2 style="-webkit-text-fill-color: white; background: none;">Our Gallery</h2>
+                    <p style="color: rgba(255,255,255,0.9);">Capturing moments at The Whale's Tale</p>
+                </div>
+                
+                <div class="gallery-carousel" id="dynamic-gallery">
+                    <!-- Images will be loaded here dynamically -->
+                </div>
             </div>
         </div>
-    </section-->
-
-<!-- ========== PARALLAX SECTION 3 (GALLERY) ========== ->
-<section id="gallery" class="parallax-section">
-    <img src="/images/foyer.jpg" alt="Gallery Background" class="parallax-bg">
-    <div class="parallax-content" style="width: 100%;">
-        <h2 style="font-size: var(--hero-sub-font-size); color: white; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); margin-bottom: 40px; text-align: center;">Our Gallery</h2>
-        <div class="gallery-grid" id="dynamic-gallery">
-            <!-- Images will be loaded here by JavaScript ->
-        </div>
-    </div>
-</section-->
-
-
-
-<!-- ========== PARALLAX SECTION 3 (GALLERY) ========== -->
-<section id="gallery" class="parallax-section">
-    <img src="https://arno-artilect.github.io/thewhalestale/images/foyer.jpg" alt="Gallery Background" class="parallax-bg">
-    <div class="parallax-content" style="width: 100%;">
-        <h2 style="font-size: var(--hero-sub-font-size); color: white; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); margin-bottom: 40px; text-align: center;">Our Gallery</h2>
-        <div class="gallery-carousel" id="dynamic-gallery">
-            <!-- Images will be loaded here dynamically -->
-        </div>
-    </div>
-</section>
-
-
-
-
-
-
+    </section>
 
     <!-- ========== PROMOTIONS SECTION ========== -->
-    <section id="promotions" class="promotions-section">
-        <h2>Exclusive Promotions</h2>
-        <p>Click below to reveal our special offers</p>
-        <button class="promo-btn" onclick="openPromotionModal()">REVEAL SPECIAL OFFERS</button>
+    <section id="promotions" class="section promotions-section">
+        <div class="container">
+            <h2>Exclusive Promotions</h2>
+            <p>Book directly with us for the best rates and special offers</p>
+            <button class="promo-btn" onclick="openPromotionModal()">REVEAL SPECIAL OFFERS</button>
+        </div>
     </section>
 
     <!-- ========== BOOKING SECTION ========== -->
-    <section id="booking" class="booking-section">
-        <h2 class="section-title">Book Your Stay</h2>
-        <a href="https://book.nightsbridge.com/24965" class="book-now-btn">BOOK NOW</a>
-    </section>
-
-    <!-- ========== CONTACT SECTION ========== -->
-    <section id="contact" class="contact-section">
-        <h2 class="section-title">Get In Touch</h2>
-        <div class="contact-container">
-            <div class="contact-info">
-                <h3>The Whale's Tale Guesthouse</h3>
-                <p><i class="fas fa-map-marker-alt"></i> 86 Westcliff Drive, Hermanus, South Africa</p>
-                <p><i class="fas fa-phone"></i> Phone: +27 28 312 3196</p>
-                <p><i class="fas fa-envelope"></i> Email: reservations@thewhalestale.co.za</p>
-                <div id="map" style="height: 200px; border-radius: var(--border-radius); margin-top: 30px;">
-                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3302.0453741899326!2d19.226203415210986!3d-34.41132878051634!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1dcd5d4eb0b3a3b5%3A0xbc33649e3fe0c7f7!2s86%20Westcliff%20Dr%2C%20Hermanus%2C%207200%2C%20South%20Africa!5e0!3m2!1sen!2s!4v1634123456789" width="100%" height="100%" style="border:0; border-radius: var(--border-radius);" allowfullscreen="" loading="lazy"></iframe>
-                </div>
+    <section id="booking" class="section booking-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Book Your Stay</h2>
+                <p>Experience the magic of Hermanus with us</p>
             </div>
-            
-            <form class="contact-form" id="contact-form">
-                <div class="form-group">
-                    <label for="name">Full Name</label>
-                    <input type="text" id="name" required>
-                </div>
-                <div class="form-group">
-                    <label for="email">Email Address</label>
-                    <input type="email" id="email" required>
-                </div>
-                <div class="form-group">
-                    <label for="phone">Phone Number</label>
-                    <input type="tel" id="phone">
-                </div>
-                <div class="form-group">
-                    <label for="message">Message</label>
-                    <textarea id="message" rows="4" required></textarea>
-                </div>
-                <button type="submit" class="submit-btn">Send Message</button>
-            </form>
+            <a href="https://book.nightsbridge.com/24965" class="book-now-btn">BOOK NOW</a>
         </div>
     </section>
 
-    <!-- ========== MODALS ========== -->
+    <!-- ========== CONTACT SECTION ========== -->
+    <section id="contact" class="section contact-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Get In Touch</h2>
+            </div>
+            
+            <div class="contact-container">
+                <div class="contact-info">
+                    <h3>The Whale's Tale Guesthouse</h3>
+                    <p><i class="fas fa-map-marker-alt"></i> 86 Westcliff Drive, Hermanus, South Africa</p>
+                    <p><i class="fas fa-phone"></i> Phone: +27 28 312 3196</p>
+                    <p><i class="fas fa-envelope"></i> Email: reservations@thewhalestale.co.za</p>
+                    
+                    <div id="map" style="height: 200px; border-radius: var(--border-radius); margin-top: 30px; overflow: hidden;">
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3302.0453741899326!2d19.226203415210986!3d-34.41132878051634!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1dcd5d4eb0b3a3b5%3A0xbc33649e3fe0c7f7!2s86%20Westcliff%20Dr%2C%20Hermanus%2C%207200%2C%20South%20Africa!5e0!3m2!1sen!2s!4v1634123456789" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                    </div>
+                </div>
+                
+                <form class="contact-form" id="contact-form">
+                    <div class="form-group">
+                        <label for="name">Full Name</label>
+                        <input type="text" id="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Phone Number</label>
+                        <input type="tel" id="phone">
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Message</label>
+                        <textarea id="message" rows="4" required></textarea>
+                    </div>
+                    <button type="submit" class="submit-btn">Send Message</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== FOOTER ========== -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>The Whale's Tale</h3>
+                <p>Family-owned luxury guesthouse on Hermanus cliff path. Offering unforgettable ocean views and warm hospitality since 2005.</p>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <a href="#rooms">Rooms & Suites</a>
+                <a href="#attractions">Experiences</a>
+                <a href="#gallery">Gallery</a>
+                <a href="#promotions">Promotions</a>
+                <a href="#contact">Contact</a>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Contact</h3>
+                <p>86 Westcliff Drive</p>
+                <p>Hermanus, 7200</p>
+                <p>South Africa</p>
+                <p>+27 28 312 3196</p>
+                <p>reservations@thewhalestale.co.za</p>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Follow Us</h3>
+                <a href="#"><i class="fab fa-facebook"></i> Facebook</a>
+                <a href="#"><i class="fab fa-instagram"></i> Instagram</a>
+                <a href="#"><i class="fab fa-tripadvisor"></i> TripAdvisor</a>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2024 The Whale's Tale Guesthouse. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- ========== MODAL ========== -->
     <div class="modal" id="main-modal">
         <div class="modal-content">
-            <span class="modal-close" onclick="closeModal()">&times;</span>
+            <button class="modal-close" onclick="closeModal()" aria-label="Close modal">&times;</button>
             <h2 id="modal-title"></h2>
             <p id="modal-body"></p>
             <p id="modal-price" class="price-tag"></p>
         </div>
     </div>
 
+    <!-- ========== AUDIO ========== -->
+    <audio id="player" src="kai-audio-a-calm-and-dreamy-ambient-track-for-the-whale-s-tale.mp3" autoplay muted loop></audio>
+
     <!-- ========== JAVASCRIPT ========== -->
     <script>
-        // ========== CUSTOMIZABLE VARIABLES ========== 
-        const config = {
-            colors: {
-                primary: getComputedStyle(document.documentElement).getPropertyValue('--primary-color').trim(),
-                secondary: getComputedStyle(document.documentElement).getPropertyValue('--secondary-color').trim()
-            },
-            header: {
-                height: getComputedStyle(document.documentElement).getPropertyValue('--header-height').trim(),
-                transparent: false
-            },
-            text: {
-                heroTitle: document.getElementById('hero-title'),
-                heroSubtitle: document.getElementById('hero-subtitle')
-            },
-            volume: {
-                muted: true
-            }
-        };
+        // ========== INITIALIZATION ==========
+        document.addEventListener('DOMContentLoaded', () => {
+            init3DLogo();
+            loadGallery();
+            adjustScrollPadding();
+            initParallax();
+        });
 
-        // ========== 3D LOGO LOADER ==========
+        // ========== 3D LOGO ==========
         function init3DLogo() {
             const canvas = document.getElementById('logo-3d');
             if (!canvas) return;
@@ -1021,79 +1365,73 @@
                 const scene = new THREE.Scene();
                 const camera = new THREE.PerspectiveCamera(75, 1, 0.1, 1000);
                 const renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
-                renderer.setSize(60, 60);
+                renderer.setSize(50, 50);
 
-                const loader = new THREE.OBJLoader();
-                loader.load(
-                    '/images/logo.obj',
-                    (object) => {
-                        scene.add(object);
-                        camera.position.z = 5;
-                        
-                        function animate() {
-                            requestAnimationFrame(animate);
-                            object.rotation.y += 0.01;
-                            renderer.render(scene, camera);
-                        }
-                        animate();
-                    },
-                    undefined,
-                    (error) => {
-                        console.log('3D model failed to load, using fallback');
-                        canvas.style.display = 'none';
-                    }
-                );
+                // Create a simple whale shape as fallback
+                const geometry = new THREE.SphereGeometry(1, 32, 32);
+                const material = new THREE.MeshBasicMaterial({ 
+                    color: 0x0d7377,
+                    wireframe: true
+                });
+                const whale = new THREE.Mesh(geometry, material);
+                scene.add(whale);
+                
+                camera.position.z = 3;
+                
+                function animate() {
+                    requestAnimationFrame(animate);
+                    whale.rotation.x += 0.01;
+                    whale.rotation.y += 0.01;
+                    renderer.render(scene, camera);
+                }
+                animate();
             } catch (e) {
+                console.log('3D logo failed, using fallback');
                 canvas.style.display = 'none';
             }
         }
 
-        /*/ ========== PARALLAX SCROLL EFFECT ==========
-        window.addEventListener('scroll', () => {
-            const scrolled = window.pageYOffset;
-            const parallaxBg = document.querySelectorAll('.parallax-bg');
-            
-            parallaxBg.forEach(bg => {
-                const speed = 0.5;
-                bg.style.transform = `translateY(${scrolled * speed}px)`;
-            });
-        });*/
-        
-        
-        
-        
-        // ========== PARALLAX SCROLL EFFECT ==========
-		window.addEventListener('scroll', () => {
-			const scrolled = window.pageYOffset;
-			const parallaxSections = document.querySelectorAll('.parallax-section');
-			
-			parallaxSections.forEach(section => {
-				const bg = section.querySelector('.parallax-bg');
-				if (bg) {
-				    // Use translate3d for hardware acceleration
-				    const speed = 0.5;
-				    const yPos = -(scrolled * speed);
-				    bg.style.transform = `translate3d(0, ${yPos}px, 0)`;
-				}
-			});
-		}, { passive: true });
-        
-        
-        
-        
-        
-        
-        
-        
-        
+        // ========== PARALLAX EFFECTS ==========
+        function initParallax() {
+            if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                return;
+            }
 
-        // ========== MOBILE MENU TOGGLE ==========
+            const heroBg = document.getElementById('hero-bg');
+            const attractionsBg = document.getElementById('attractions-bg');
+            const galleryBg = document.getElementById('gallery-bg');
+
+            function updateParallax() {
+                const scrollY = window.pageYOffset;
+                
+                if (heroBg) {
+                    const heroY = -(scrollY * 0.5);
+                    heroBg.style.transform = `translate3d(0, ${heroY}px, 0)`;
+                }
+                
+                if (attractionsBg) {
+                    const attractionsY = -(scrollY * 0.3);
+                    attractionsBg.style.transform = `translate3d(0, ${attractionsY}px, 0)`;
+                }
+                
+                if (galleryBg) {
+                    const galleryY = -(scrollY * 0.4);
+                    galleryBg.style.transform = `translate3d(0, ${galleryY}px, 0)`;
+                }
+            }
+
+            window.addEventListener('scroll', updateParallax, { passive: true });
+            updateParallax(); // Initial call
+        }
+
+        // ========== MOBILE MENU ==========
         const menuToggle = document.getElementById('menu-toggle');
         const mainNav = document.getElementById('main-nav');
 
         menuToggle.addEventListener('click', () => {
             mainNav.classList.toggle('active');
             menuToggle.classList.toggle('active');
+            menuToggle.setAttribute('aria-expanded', mainNav.classList.contains('active'));
         });
 
         // Close menu on link click
@@ -1101,17 +1439,21 @@
             link.addEventListener('click', () => {
                 mainNav.classList.remove('active');
                 menuToggle.classList.remove('active');
+                menuToggle.setAttribute('aria-expanded', 'false');
             });
         });
 
         // ========== VOLUME CONTROL ==========
         const volumeToggle = document.getElementById('volume-toggle');
         const video = document.getElementById('hero-video');
+        const audio = document.getElementById('player');
+        let isMuted = true;
         
         volumeToggle.addEventListener('click', () => {
-            config.volume.muted = !config.volume.muted;
-            video.muted = config.volume.muted;
-            volumeToggle.innerHTML = config.volume.muted 
+            isMuted = !isMuted;
+            video.muted = isMuted;
+            audio.muted = isMuted;
+            volumeToggle.innerHTML = isMuted 
                 ? '<i class="fas fa-volume-mute"></i>'
                 : '<i class="fas fa-volume-up"></i>';
         });
@@ -1120,7 +1462,6 @@
         const darkModeToggle = document.getElementById('dark-mode-toggle');
         const storedTheme = localStorage.getItem('theme') || 'light';
         
-        // Apply stored theme on load
         document.body.setAttribute('data-theme', storedTheme);
         updateDarkModeIcon(storedTheme);
 
@@ -1145,29 +1486,29 @@
             document.getElementById('modal-body').textContent = body;
             document.getElementById('modal-price').textContent = price || '';
             document.getElementById('main-modal').style.display = 'flex';
+            document.body.style.overflow = 'hidden';
         }
 
         function openRoomModal(name, price, description) {
             openModal(name, description, price);
         }
 
-        function openImageModal(src) {
-            openModal('Gallery Image', '', '');
-            document.getElementById('modal-body').innerHTML = `<img src="${src}" style="width: 100%; border-radius: var(--border-radius);">`;
+        function openAttractionModal(name, description) {
+            openModal(name, description);
         }
 
         function openPromotionModal() {
             openModal('Special Promotions', 
-                '•  Direct Booking Special - 10% Discount through 01 Apr 2025 to 15 Dec 2025\n• Stay 4 nights, pay for 3 (valid until Dec 2025)\n• Whale Season Special: 15% off whale watching packages\n• Honeymoon Package: Complimentary champagne & breakfast in bed\n• Golf Package: 2 nights + 2 rounds of golf at Hermanus Golf Club',
-                'From R3200/night'
+                '• Direct Booking Special - 10% Discount through 01 Apr 2025 to 15 Dec 2025\n• Stay 4 nights, pay for 3 (valid until Dec 2025)\n• Whale Season Special: 15% off whale watching packages\n• Honeymoon Package: Complimentary champagne & breakfast in bed\n• Golf Package: 2 nights + 2 rounds of golf at Hermanus Golf Club',
+                'From R2,850/night'
             );
         }
 
         function closeModal() {
             document.getElementById('main-modal').style.display = 'none';
+            document.body.style.overflow = 'auto';
         }
 
-        // Close modal on outside click
         window.onclick = function(event) {
             const modal = document.getElementById('main-modal');
             if (event.target == modal) {
@@ -1182,114 +1523,87 @@
             e.target.reset();
         });
 
-        // ========== HEADER SCROLL EFFECT ==========
-        window.addEventListener('scroll', () => {
-            const header = document.getElementById('main-header');
-            if (window.scrollY > 50) {
-                header.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.2)';
-            } else {
-                header.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.1)';
-            }
-        });
+        // ========== GALLERY LOADER ==========
+        function loadGallery() {
+            const galleryContainer = document.getElementById('dynamic-gallery');
+            if (!galleryContainer) return;
 
+            // Sample gallery images - in production, load from JSON or directory
+            const galleryImages = [
+                'room_luxury.jpg',
+                'room_superior.jpg',
+                'room_luxury_ocean_view.jpg',
+                'whale.webp',
+                'golf.jpg',
+                'shark.jpg',
+                'wine.jpg',
+                'cliff.jpg'
+            ];
 
-
-// ========== DYNAMIC GALLERY LOADER ==========
-function loadGallery() {
-    const galleryContainer = document.getElementById('dynamic-gallery');
-    
-    // Method 1: Try loading from JSON manifest (Recommended)
-    fetch('./images/gallery/gallery.json')
-        .then(response => response.json())
-        .then(images => {
-            galleryContainer.innerHTML = ''; // Clear loading text
-            images.forEach(image => {
+            galleryContainer.innerHTML = '';
+            
+            galleryImages.forEach(image => {
                 const itemDiv = document.createElement('div');
                 itemDiv.className = 'gallery-item';
                 
                 const imgElement = document.createElement('img');
-                imgElement.src = `https://arno-artilect.github.io/thewhalestale/images/gallery/${image}`;
-                imgElement.alt = image.split('.')[0]; // Use filename as alt text
+                imgElement.src = `/images/rooms/${image}`;
+                imgElement.alt = image.split('.')[0].replace('_', ' ');
                 imgElement.className = 'gallery-img';
                 imgElement.onclick = () => openImageModal(imgElement.src);
                 
                 itemDiv.appendChild(imgElement);
                 galleryContainer.appendChild(itemDiv);
             });
-        })
-        .catch(error => {
-            console.log('JSON method failed, trying directory listing...');
-            
-            // Method 2: For servers with directory listing enabled (less secure)
-            fetch('./images/gallery/')
-                .then(response => response.text())
-                .then(html => {
-                    const parser = new DOMParser();
-                    const doc = parser.parseFromString(html, 'text/html');
-                    const links = doc.querySelectorAll('a');
-                    const imageExts = ['.jpg', '.jpeg', '.png', '.gif', '.webp'];
-                    
-                    galleryContainer.innerHTML = '';
-                    links.forEach(link => {
-                        const href = link.getAttribute('href');
-                        if (!href || href === 'gallery.json') return;
-                        
-                        const isImage = imageExts.some(ext => href.toLowerCase().endsWith(ext));
-                        if (isImage) {
-                            const itemDiv = document.createElement('div');
-                            itemDiv.className = 'gallery-item';
-                            
-                            const imgElement = document.createElement('img');
-                            imgElement.src = `https://arno-artilect.github.io/thewhalestale/images/gallery/${href}`;
-                            imgElement.alt = href.split('.')[0];
-                            imgElement.className = 'gallery-img';
-                            imgElement.onclick = () => openImageModal(imgElement.src);
-                            
-                            itemDiv.appendChild(imgElement);
-                            galleryContainer.appendChild(itemDiv);
-                        }
-                    });
-                })
-                .catch(error => {
-                    console.error('Failed to load gallery:', error);
-                    galleryContainer.innerHTML = '<p style="color: var(--text-primary);">Gallery loading failed. Please check console.</p>';
-                });
+        }
+
+        function openImageModal(src) {
+            openModal('Gallery Image', '');
+            document.getElementById('modal-body').innerHTML = `<img src="${src}" style="width: 100%; border-radius: var(--border-radius);">`;
+        }
+
+        // ========== HEADER SCROLL EFFECT ==========
+        window.addEventListener('scroll', () => {
+            const header = document.getElementById('main-header');
+            if (window.scrollY > 50) {
+                header.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.1)';
+            } else {
+                header.style.boxShadow = 'none';
+            }
         });
-}
 
-// ========== INITIALIZATION ==========
-document.addEventListener('DOMContentLoaded', () => {
-    init3DLogo();
-    loadGallery(); // Add this line
-    // ... rest of existing code
-    document.getElementById('map').innerHTML = '<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3302.0453741899326!2d19.226203415210986!3d-34.41132878051634!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1dcd5d4eb0b3a3b5%3A0xbc33649e3fe0c7f7!2s86%20Westcliff%20Dr%2C%20Hermanus%2C%207200%2C%20South%20Africa!5e0!3m2!1sen!2s!4v1634123456789" width="100%" height="100%" style="border:0; border-radius: var(--border-radius);" allowfullscreen="" loading="lazy"></iframe>';
-});
+        // ========== SCROLL PADDING ADJUSTMENT ==========
+        function adjustScrollPadding() {
+            const header = document.getElementById('main-header');
+            if (header) {
+                const headerHeight = header.offsetHeight;
+                document.documentElement.style.scrollPaddingTop = `${headerHeight}px`;
+            }
+        }
+
+        // ========== AUDIO AUTOPLAY ==========
+        const player = document.getElementById("player");
+        player.volume = 0.2;
+
+        function tryPlay() {
+            player.muted = false;
+            player.play().catch(() => {});
+        }
+
+        window.addEventListener("scroll", tryPlay, { once: true });
+        window.addEventListener("click", tryPlay, { once: true });
+        window.addEventListener("touchstart", tryPlay, { once: true });
+
+        // ========== SMOOTH SCROLL ==========
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
     </script>
-    
-    
-    
-    
-        <!-- Audio implementation kept as-is per user request -->
-    <audio id="player" src="https://arno-artilect.github.io/thewhalestale/sound/kai-audio-a-calm-and-dreamy-ambient-track-for-the-whale-s-tale.mp3" autoplay muted loop></audio>
-    <script>
-    const player = document.getElementById("player");
-    player.volume = 0.2; // Set volume to 20% (range: 0.0 to 1.0)
-
-    function tryPlay() {
-        player.muted = false;
-        player.play().catch(() => {});
-    }
-
-    window.addEventListener("scroll", tryPlay, { once: true });
-    window.addEventListener("click", tryPlay, { once: true });
-    window.addEventListener("touchstart", tryPlay, { once: true });
-    </script>
-    
-    
-    
-    
-    
-    
-    
 </body>
 </html>
